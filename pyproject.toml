@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "lowcode-scraper"
+version = "0.1.0"
+description = "最低限の入力でスクレイピングを実行するツール"
+authors = ["yuuuuukih <yh.works01@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
