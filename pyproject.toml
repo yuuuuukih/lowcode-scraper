@@ -7,6 +7,10 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
+argparse = "^1.4.0"
+selenium = "^4.27.1"
+beautifulsoup4 = "^4.12.3"
+tqdm = "^4.67.1"
 
 
 [build-system]
