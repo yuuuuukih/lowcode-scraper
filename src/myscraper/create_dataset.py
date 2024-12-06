@@ -19,7 +19,7 @@ class Config:
             self,
             data_dir: str,
             dataset_name_base = 'base_dataset',
-            dataset_name_pd = 'product_dataset',
+            dataset_name_scd = 'scraped_dataset',
             auto_save: bool = True
         ) -> None:
         """コンストラクタ
@@ -27,12 +27,12 @@ class Config:
         Args:
             data_dir (str): dataを管理するディレクトリ。作成するjsonlやcsvはすべてこの直下に保存される。
             dataset_name_base (str, optional): BASE_DATA型のデータを保存するデータセットのファイル名。Default base_dataset.
-            dataset_name_pd (str, optional): 製品情報であるINFO_TYPE型×データ数を保存するデータセットのファイル名。Default product_dataset.
-            auto_save (bool, optional): Auto save。Trueの場合は、スクレイピングで取得した情報が逐次的にdataset_name_pd.jsonlに保存される。Falseは非推奨。Defaults to True.
+            dataset_name_scd (str, optional): 製品情報であるINFO_TYPE型×データ数を保存するデータセットのファイル名。Default scraped_dataset.
+            auto_save (bool, optional): Auto save。Trueの場合は、スクレイピングで取得した情報が逐次的にdataset_name_scd.jsonlに保存される。Falseは非推奨。Defaults to True.
         """
         self.data_dir = data_dir
         self.dataset_name_base = dataset_name_base
-        self.dataset_name_pd = dataset_name_pd
+        self.dataset_name_scd = dataset_name_scd
         self.auto_save = auto_save
         
 class DatasetCreator(Scraper):
@@ -49,13 +49,13 @@ class DatasetCreator(Scraper):
         self.__data_dir = config.data_dir
         self.__dataset_file_name = {
             'base': config.dataset_name_base,
-            'pd': config.dataset_name_pd
+            'scd': config.dataset_name_scd
         }
         self.__auto_save = config.auto_save
 
         # 保存するデータセットのパス
         self.__base_data_path = os.path.join(self.__data_dir, f"{self.__dataset_file_name['base']}.jsonl")
-        self.__pd_jsonl_path = os.path.join(self.__data_dir, f"{self.__dataset_file_name['pd']}.jsonl")
+        self.__scd_jsonl_path = os.path.join(self.__data_dir, f"{self.__dataset_file_name['scd']}.jsonl")
 
     def get_application_number_dataset(self, do_sampling: bool = True, sampling_num: int = 10, seed_value: int = 42) -> list[BASE_DATA]:
         """base_datasetから要素をランダムに抽出し、list形式で返す
@@ -98,7 +98,7 @@ class DatasetCreator(Scraper):
                 product_info: INFO_TYPE = self.scrape_data(base_data['url'], base_data['id'], info_to_be_scraped)
 
             if self.__auto_save:
-                jsonl.add_line_to_jsonl(product_info, self.__pd_jsonl_path, not_first_line=bool(i), new_file=new_file)
+                jsonl.add_line_to_jsonl(product_info, self.__scd_jsonl_path, not_first_line=bool(i), new_file=new_file)
             else:
                 product_info_list.append(product_info)
         # auto_saveがTrueの場合は、スクレイピングデータを保存しないため、空のリストを返す。
@@ -115,13 +115,13 @@ class DatasetCreator(Scraper):
         if self.__auto_save:
             print('auto_save is activated.')
         else:
-            jsonl.save_as_jsonl(product_info_list, self.__pd_jsonl_path)
+            jsonl.save_as_jsonl(product_info_list, self.__scd_jsonl_path)
 
-    def convert_jsonl_to_csv(self, mode: Literal['pd', 'base'] = 'pd', encoding = 'shift-jis', cp932: bool = False) -> None:
+    def convert_jsonl_to_csv(self, mode: Literal['scd', 'base'] = 'scd', encoding = 'shift-jis', cp932: bool = False) -> None:
         """data_dir直下に保存されたjsonlファイルをcsvに変換
 
         Args:
-            mode (Literal['pd', 'base'], optional): 'pd'と'base'をとることができる。pdの場合はdataset_name_pdの名前で保存された.jsonlを、baseの場合はdataset_name_baseの名前で保存された.jsonlをcsvに変換する。Defaults pd.
+            mode (Literal['scd', 'base'], optional): 'scd'と'base'をとることができる。scdの場合はdataset_name_scdの名前で保存された.jsonlを、baseの場合はdataset_name_baseの名前で保存された.jsonlをcsvに変換する。Defaults scd.
             encoding (str, optional): csvに書き込む際のencodeタイプを指定。Defaults to shift-jis.
             cp932 (bool, optional): cp932でのencodingを試みる。Trueの場合、まずshift-jisでトライし、失敗した場合にcp932にてencodingする。jsonl.to_csv()用。Defaults to False.
         """

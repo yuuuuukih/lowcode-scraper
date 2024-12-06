@@ -44,8 +44,8 @@ class Scraper:
         """
         # Set tha path for browser
         self.set_edge_path(
-            edge_binary_path=r'path to msedge.exe',
-            edge_driver_path=r'path to msedgedriver.exe'
+            edge_binary_path=r'/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge',
+            edge_driver_path=r'/Volumes/ext-ssd/program_files/lowcode-scraper/Microsoft Edge WebDriver arm64/msedgedriver.exe'
         )
         # Set the options for scraping
         self.options = Options()
