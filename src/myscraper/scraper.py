@@ -35,8 +35,12 @@ class Scraper:
     使用する場合はhttps://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/?form=MA13LH から、各々の環境にあったdriverをダウンロードする必要がある。
     そのうえで、msedge.exeとmsedgedriver.exeまでのパスを、set_edge_pathから設定する必要がある。
     """
-    def __init__(self) -> None:
+    def __init__(self, browser_binary_path: str, driver_path: str) -> None:
         """コンストラクタ
+
+        Args:
+            browser_binary_path (str): ブラウザの実行ファイル（ex: msedge.exe）までのパス
+            driver_path (str): ブラウザのドライバ（ex: msedgedriver.exe）までのパス
         
         Notes:
             - msedge.exeとmsedgedriver.exeまでのパスを、set_edge_pathから設定する
@@ -44,8 +48,8 @@ class Scraper:
         """
         # Set tha path for browser
         self.set_edge_path(
-            edge_binary_path=r'/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge',
-            edge_driver_path=r'/Volumes/ext-ssd/program_files/lowcode-scraper/Microsoft Edge WebDriver arm64/msedgedriver.exe'
+            edge_binary_path=browser_binary_path,
+            edge_driver_path=driver_path
         )
         # Set the options for scraping
         self.options = Options()
@@ -143,7 +147,7 @@ class Scraper:
         _fetch_elementがno_el_evalとして数字以外を返す可能性があるため
 
         Args:
-            v: intに変換したいテキスト
+            v (str): intに変換したいテキスト
         
         Returns:
             int | str: int型に変換できない場合は、文字列としてそのまま返す
@@ -162,7 +166,7 @@ class Scraper:
         _fetch_elementがno_el_evalとして数字以外を返す可能性があるため
 
         Args:
-            v: floatに変換したいテキスト
+            v (str): floatに変換したいテキスト
 
         Returns:
             float | str: float型に変換できない場合は、文字列としてそのまま返す

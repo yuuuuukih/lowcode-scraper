@@ -18,7 +18,7 @@ def get_unit_airline_review_info_to_be_scraped(index: int) -> dict[str, EL_INFO]
         },
         'score': {
             'css_selector': f'body > div > main > div.w-full.max-w-full.overflow-x-clip.flex-grow > div > div:nth-child(3) > div > div > div > div.flex.flex-col.space-y-12.items-start.w-full > a:nth-child({index}) > div.flex.flex-row.items-center.space-x-1.mt-4 > p',
-            'func': lambda value: sp.safe_int(value.replace('/10', '').strip())
+            'func': lambda value: sp.safe_int(value.replace(' / 10', '').strip())
         },
         'comment': {
             'css_selector': f'body > div > main > div.w-full.max-w-full.overflow-x-clip.flex-grow > div > div:nth-child(3) > div > div > div > div.flex.flex-col.space-y-12.items-start.w-full > a:nth-child({index}) > div.flex.flex-col.gap-8.w-full.items-start > p',

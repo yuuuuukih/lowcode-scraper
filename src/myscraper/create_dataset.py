@@ -17,6 +17,8 @@ class Config:
 
     def __init__(
             self,
+            browser_binary_path: str,
+            driver_path: str,
             data_dir: str,
             dataset_name_base = 'base_dataset',
             dataset_name_scd = 'scraped_dataset',
@@ -25,11 +27,15 @@ class Config:
         """コンストラクタ
 
         Args:
+            browser_binary_path (str): ブラウザの実行ファイル（ex: msedge.exe）までのパス。Scraperに必要
+            driver_path (str): ブラウザのドライバ（ex: msedgedriver.exe）までのパス。Scraperに必要
             data_dir (str): dataを管理するディレクトリ。作成するjsonlやcsvはすべてこの直下に保存される。
             dataset_name_base (str, optional): BASE_DATA型のデータを保存するデータセットのファイル名。Default base_dataset.
             dataset_name_scd (str, optional): 製品情報であるINFO_TYPE型×データ数を保存するデータセットのファイル名。Default scraped_dataset.
             auto_save (bool, optional): Auto save。Trueの場合は、スクレイピングで取得した情報が逐次的にdataset_name_scd.jsonlに保存される。Falseは非推奨。Defaults to True.
         """
+        self.browser_binary_path = browser_binary_path
+        self.driver_path = driver_path
         self.data_dir = data_dir
         self.dataset_name_base = dataset_name_base
         self.dataset_name_scd = dataset_name_scd
@@ -44,7 +50,7 @@ class DatasetCreator(Scraper):
         Args:
             config (Config): 設定したconfig
         """
-        super().__init__()
+        super().__init__(config.browser_binary_path, config.driver_path)
         
         self.__data_dir = config.data_dir
         self.__dataset_file_name = {

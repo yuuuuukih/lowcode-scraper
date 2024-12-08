@@ -84,7 +84,7 @@ class jsonl:
                     except UnicodeEncodeError as e:
                         print(f'{row=}')
                         print(e)
-                        raise ValueError('here (to_csv method in jsonl.py')
+                        raise ValueError('here (to_csv method in jsonl.py)')
         
         if cp932:
             # _save_as_csv(arg_encoding='cp932')
